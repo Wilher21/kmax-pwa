@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>KMAX</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#111111">
+
+  <!-- iPhone -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="KMAX">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #111;
+      color: white;
+    }
+
+    .screen {
+      display: none;
+      padding: 30px;
+      height: 100vh;
+    }
+
+    .active {
+      display: block;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #00c853;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      background: #222;
+    }
+
+    .nav button {
+      flex: 1;
+      background: none;
+      border: none;
+      color: white;
+      padding: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+  <div id="login" class="screen active">
+    <h1>KMAX</h1>
+    <input id="user" placeholder="Usuario">
+    <input id="pass" type="password" placeholder="Contraseña">
+    <button onclick="login()">Entrar</button>
+  </div>
+
+  <!-- HOME -->
+  <div id="home" class="screen">
+    <h1>Inicio</h1>
+    <p>Bienvenido a KMAX 🚀</p>
+  </div>
+
+  <!-- PERFIL -->
+  <div id="perfil" class="screen">
+    <h1>Perfil</h1>
+    <p>Usuario conectado</p>
+    <button onclick="logout()">Cerrar sesión</button>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav" id="nav" style="display:none;">
+    <button onclick="show('home')">Inicio</button>
+    <button onclick="show('perfil')">Perfil</button>
+  </div>
+
+  <script>
+    function show(screen) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screen).classList.add('active');
+    }
+
+    function login() {
+      const user = document.getElementById('user').value;
+      const pass = document.getElementById('pass').value;
+
+      if (user === "admin" && pass === "1234") {
+        localStorage.setItem("login", "true");
+        document.getElementById("nav").style.display = "flex";
+        show("home");
+      } else {
+        alert("Datos incorrectos");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("login");
+      location.reload();
+    }
+
+    // Auto login
+    if (localStorage.getItem("login") === "true") {
+      document.getElementById("nav").style.display = "flex";
+      show("home");
+    }
+  </script>
+
+</body>
+</html>
